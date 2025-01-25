@@ -1,48 +1,44 @@
-def WaterJug(jugA, jugB, goal):
-    stack = []
-    visited = set()
-    
-    stack.append((0, 0))
+def water_jug_problem(jug1,jug2,goal):
+    stack=[]
+    visited=set()
+    stack.append((0,0))
     
     while stack:
-        current_state = stack.pop()
-        x, y = current_state
-        print(f"Current state: ({x}, {y})")
+        current_state=stack.pop()
+        x,y=current_state
+        print(f"Current State is ({x},{y})")
         
-        if x == goal or y == goal:
-            print(f"Solution found at state: ({x}, {y})")
+        if x==goal or y==goal:
+            print(f"Solution is found at State ({x},{y})")
             return True
-
+            
         if current_state in visited:
             continue
-
         visited.add(current_state)
-
-        states = set()
-
-        states.add((jugA, y))
-        states.add((x, jugB))
-        states.add((0, y))
-        states.add((x, 0))
-        pour_AtoB = min(x, jugB - y)
-        states.add((x - pour_AtoB, y + pour_AtoB))
-        pour_BtoA = min(y, jugA - x)
-        states.add((x + pour_BtoA, y - pour_BtoA))
-
+        
+        states=set()
+        states.add((jug1,y))
+        states.add((x,jug2))
+        states.add((0,y))
+        states.add((x,0))
+        poura_b=min(x,(jug2-y))
+        states.add((x-poura_b,y+poura_b))
+        pourb_a=min(y,jug1-x)
+        states.add((x+pourb_a,y-pourb_a))
+        
         for state in states:
             if state not in visited:
                 stack.append(state)
 
-    print("Solution not found.")
-    return False
+    return False     
+                
+                
+#Test case
+jug1=4
+jug2=3
+goal=2
 
-
-# Test case
-jugA = 4  
-jugB = 3  
-goal = 2  
-
-if WaterJug(jugA, jugB, goal):
-    print("Solution found!")
+if water_jug_problem(jug1,jug2,goal):
+    print("Solution Found!")
 else:
-    print("Solution not found.")
+    print("Solution Not Found!")
