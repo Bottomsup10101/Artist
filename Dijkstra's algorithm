@@ -1,0 +1,39 @@
+def dijkstra(graph, start):
+    distances = {}
+    unvisited = list(graph.keys())
+
+    for vertex in unvisited:
+        distances[vertex] = float('infinity')
+    distances[start] = 0
+
+    while unvisited:
+        current_vertex = None
+        smallest_distance = float('infinity')
+
+        for vertex in unvisited:
+            if distances[vertex] < smallest_distance:
+                smallest_distance = distances[vertex]
+                current_vertex = vertex
+
+        if distances[current_vertex] == float('infinity'):
+            break
+
+        for neighbor, weight in graph[current_vertex].items():
+            distance = distances[current_vertex] + weight
+
+            if distance < distances[neighbor]:
+                distances[neighbor] = distance
+
+        unvisited.remove(current_vertex)
+
+    return distances
+
+graph = {
+    'A': {'B': 1, 'C': 4},
+    'B': {'A': 1, 'C': 2, 'D': 5},
+    'C': {'A': 4, 'B': 2, 'D': 1},
+    'D': {'B': 5, 'C': 1}
+}
+
+distances = dijkstra(graph, 'A')
+print(distances)
