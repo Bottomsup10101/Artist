@@ -1,31 +1,31 @@
-MAX = 1000
-MIN = -1000
+MAX=1000
+MIN=-1000
 
-def minimax(depth, nodeIndex, maximizingPlayer, values, alpha, beta):
-    if depth == 3:  # Leaf node (depth = 3 in this case)
-        return values[nodeIndex]
-
-    if maximizingPlayer:
-        best = MIN
-        for i in range(2):  # There are two child nodes for each node
-            val = minimax(depth + 1, nodeIndex * 2 + i, False, values, alpha, beta)
-            best = max(best, val)
-            alpha = max(alpha, best)  # Alpha is the best value so far for the maximizer
-
+def minimax(depth,nodeindex,maximizing_player,values,alpha,beta):
+    if depth==3:
+        return values[nodeindex]
+    
+    if maximizing_player:
+        best=MIN
+        for i in range (2):
+            val=minimax(depth+1,nodeindex*2+i,False,values,alpha,beta)
+            best=max(best,val)
+            alpha=max(alpha,best)
+            
             if beta <= alpha:
                 break
         return best
     else:
-        best = MAX
-        # Recur for left and right children
-        for i in range(2):  # There are two child nodes for each node
-            val = minimax(depth + 1, nodeIndex * 2 + i, True, values, alpha, beta)
-            best = min(best, val)
-            beta = min(beta, best)  # Beta is the best value so far for the minimizer
+        best=MAX
+        for i in range (2):
+            val=minimax(depth+1,nodeindex*2+i,True,values,alpha,beta)
+            best=min(best,val)
+            beta=min(beta,best)
+            
             if beta <= alpha:
                 break
         return best
-
-if __name__ == "__main__":
-    values = [3, 5, 6, 9, 1, 2, 0, -1]  # Leaf node values
-    print("The optimal value is:", minimax(0, 0, True, values, MIN, MAX))
+        
+if __name__=="__main__":
+    values=[3, 5, 6, 9, 1, 2, 0, -1]
+    print("The optimal value is:", minimax(0,0,True,values,MIN,MAX))
