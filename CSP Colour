@@ -1,0 +1,48 @@
+def map_coloring(graph, colors):
+    assignment = {node: None for node in graph}
+    
+    def is_valid(node, color):
+        for neighbor in graph[node]:
+            if assignment[neighbor] == color:
+                return False
+        return True
+
+    def backtrack(node_index):
+        if node_index == len(graph):
+            return True
+        
+        node = list(graph.keys())[node_index]
+        
+        for color in colors:
+            if is_valid(node, color):
+                assignment[node] = color
+                
+                if backtrack(node_index + 1):
+                    return True
+                
+                assignment[node] = None
+        
+        return False
+
+    if backtrack(0):
+        return assignment
+    else:
+        return None
+
+graph = {
+    'A': ['B', 'C'],
+    'B': ['A', 'C', 'D'],
+    'C': ['A', 'B', 'D', 'E'],
+    'D': ['B', 'C', 'E'],
+    'E': ['C', 'D']
+}
+colors = ['Red', 'Green', 'Blue']
+
+solution = map_coloring(graph, colors)
+
+if solution:
+    print("Solution found:")
+    for node, color in solution.items():
+        print(f"Node {node}: {color}")
+else:
+    print("No solution exists.")
