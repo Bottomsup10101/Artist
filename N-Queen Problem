@@ -1,0 +1,48 @@
+def is_safe(board, row, col, n):
+    # Check for queen in the same column
+    for i in range(row):
+        if board[i][col] == 1:
+            return False
+
+    # Check for queen in the upper left diagonal
+    for i, j in zip(range(row - 1, -1, -1), range(col - 1, -1, -1)):
+        if board[i][j] == 1:
+            return False
+
+    # Check for queen in the upper right diagonal
+    for i, j in zip(range(row - 1, -1, -1), range(col + 1, n)):
+        if board[i][j] == 1:
+            return False
+
+    return True
+
+def solve_n_queens(board, row, n, solutions):
+    # If all queens are placed, store the solution
+    if row == n:
+        solutions.append([row[:] for row in board])
+        return
+
+    for col in range(n):
+        # Check if it's safe to place the queen
+        if is_safe(board, row, col, n):
+            board[row][col] = 1  # Place queen
+            solve_n_queens(board, row + 1, n, solutions)  # Recur to place rest of the queens
+            board[row][col] = 0  # Backtrack
+
+def print_solutions(solutions, n):
+    for sol in solutions:
+        for row in sol:
+            print(" ".join("Q" if cell else "." for cell in row))
+        print("\n" + ("-" * (2 * n)))
+
+if __name__ == "__main__":
+    n = int(input("Enter the value of N: "))
+    board = [[0] * n for _ in range(n)]
+    solutions = []
+    
+    # Solve the N-Queens problem
+    solve_n_queens(board, 0, n, solutions)
+    
+    # Print all solutions
+    print(f"Total solutions: {len(solutions)}")
+    print_solutions(solutions, n)
