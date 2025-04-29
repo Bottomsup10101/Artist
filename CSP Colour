@@ -1,3 +1,4 @@
+import networkx as nx
 def map_coloring(graph, colors):
     assignment = {node: None for node in graph}
     
@@ -46,3 +47,49 @@ if solution:
         print(f"Node {node}: {color}")
 else:
     print("No solution exists.")
+    import networkx as nx
+import matplotlib.pyplot as plt
+
+graph = {
+    'A': ['B', 'C'],
+    'B': ['A', 'C', 'D'],
+    'C': ['A', 'B', 'D', 'E'],
+    'D': ['B', 'C', 'E'],
+    'E': ['C', 'D']
+}
+colors = ['Red', 'Green', 'Blue']
+
+def map_coloring(graph, colors):
+    assignment = {node: None for node in graph}
+    
+    def is_valid(node, color):
+        return all(assignment[neighbor] != color for neighbor in graph[node])
+    
+    def backtrack(node_index):
+        if node_index == len(graph):
+            return True
+        node = list(graph.keys())[node_index]
+        for color in colors:
+            if is_valid(node, color):
+                assignment[node] = color
+                if backtrack(node_index + 1):
+                    return True
+                assignment[node] = None
+        return False
+    
+    return assignment if backtrack(0) else None
+
+solution = map_coloring(graph, colors)
+
+G = nx.Graph()
+for node, neighbors in graph.items():
+    for neighbor in neighbors:
+        G.add_edge(node, neighbor)
+
+node_colors = [solution[node] if solution else 'gray' for node in G.nodes()]
+
+plt.figure(figsize=(5, 5))
+pos = nx.spring_layout(G)
+nx.draw(G, pos, with_labels=True, node_color=node_colors, edge_color="black", font_weight="bold", node_size=2000)
+plt.title("Graph Coloring Solution")
+plt.show()
